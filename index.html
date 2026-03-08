@@ -10,29 +10,100 @@
       padding: 0;
       height: 100%;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
+      color: white;
       background: #000;
       overflow: hidden;
     }
 
-    video#bg-video {
+    /* Animated galaxy layers */
+    .galaxy {
       position: fixed;
-      top: 50%; left: 50%;
-      min-width: 100%; min-height: 100%;
-      width: auto; height: auto;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      overflow: hidden;
+    }
+
+    .stars, .stars2, .stars3 {
+      position: absolute;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .stars {
+      background: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 160px 120px, #ddd, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 200px 200px;
+      animation: twinkle 50s infinite linear, drift 120s infinite linear;
+      opacity: 0.8;
+    }
+
+    .stars2 {
+      background: 
+        radial-gradient(1.5px 1.5px at 30px 60px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 80px 110px, #eee, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 110px 190px, #fff, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 300px 300px;
+      animation: twinkle 70s infinite linear, drift-slow 180s infinite linear reverse;
+      opacity: 0.6;
+    }
+
+    .stars3 {
+      background: 
+        radial-gradient(3px 3px at 10px 10px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 200px 50px, #ddd, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 400px 400px;
+      animation: twinkle 90s infinite linear;
+      opacity: 0.4;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-100px, -100px); }
+    }
+
+    @keyframes drift-slow {
+      from { transform: translate(0, 0); }
+      to { transform: translate(80px, 80px); }
+    }
+
+    /* Optional fallback static Milky Way if you prefer */
+    .background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&q=80&w=3000') center center / cover no-repeat;
       z-index: -3;
-      filter: brightness(1.15) contrast(1.1) saturate(1.25); /* Makes the video pop more epic/visible */
+      animation: subtle-zoom 60s infinite alternate ease-in-out;
+    }
+
+    @keyframes subtle-zoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
     }
 
     .overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0, 0, 30, 0.12); /* Almost transparent now – max visibility for epic video */
+      background: rgba(0, 0, 20, 0.25); /* Much lighter now â Milky Way shines through */
       z-index: -2;
-      pointer-events: none;
     }
 
     .content {
@@ -46,51 +117,31 @@
     }
 
     h1 {
-      font-size: 4.5rem;
-      margin: 0.1em 0;
-      letter-spacing: 3px;
-      text-shadow: 
-        0 0 20px #fff,
-        0 0 40px #a0c4ff,
-        0 0 80px #7da8ff,
-        0 0 120px #5a8aff,
-        0 0 160px #3a6eff; /* Intense cosmic glow for epic standout */
+      font-size: 3.8rem;
+      margin: 0.2em 0;
+      text-shadow: 0 0 30px rgba(200, 220, 255, 0.9), 0 0 60px rgba(100, 150, 255, 0.6);
     }
 
     p {
-      font-size: 2rem;
-      margin: 0.4em 0;
-      text-shadow: 
-        0 0 15px #000,
-        0 0 30px #000,
-        0 0 60px rgba(100, 150, 255, 0.6);
+      font-size: 1.6rem;
+      margin: 0.5em 0;
+      text-shadow: 0 0 20px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 0, 0, 0.7);
     }
 
     @media (max-width: 768px) {
-      h1 { font-size: 3.2rem; }
-      p  { font-size: 1.6rem; }
-    }
-
-    /* Dark fallback if video fails */
-    .fallback {
-      position: fixed;
-      inset: 0;
-      background: url('https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&q=80&w=3000') center / cover no-repeat;
-      z-index: -4;
+      h1 { font-size: 2.8rem; }
+      p  { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
-  <video autoplay muted loop playsinline id="bg-video">
-    <!-- Replace with your epic looping MP4 (upload to repo or use direct free link) -->
-    <source src="https://cdn.pixabay.com/video/2020/10/22/53082-472531836_large.mp4" type="video/mp4">
-    <!-- Or better epic one: find/download from Pixabay/Videezy and upload to /assets/ -->
-    <!-- Example repo path: <source src="/assets/epic-galaxy-loop.mp4" type="video/mp4"> -->
-    <div class="fallback"></div>
-  </video>
-
+  <div class="galaxy">
+    <div class="background"></div> <!-- static fallback -->
+    <div class="stars3"></div>
+    <div class="stars2"></div>
+    <div class="stars"></div>
+  </div>
   <div class="overlay"></div>
-
   <div class="content">
     <h1>Victory Pizza LLC</h1>
     <p>Coming Q2 2027</p>
